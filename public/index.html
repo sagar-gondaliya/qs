@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>QuickShare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <section id="login-screen" class="page page-login">
+      <form id="login-form" class="login-card" autocomplete="on">
+        <div class="login-mark">QS</div>
+        <h1>QuickShare</h1>
+        <p class="login-sub">Shared notes across your PCs. Sign in once.</p>
+
+        <label class="field">
+          <span>Username</span>
+          <input id="username" name="username" type="text" value="admin" autocomplete="username" required />
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+        <p id="login-error" class="login-error" hidden></p>
+        <button type="submit" class="btn btn-yellow btn-block">Continue</button>
+      </form>
+    </section>
+
+    <section id="app" class="page page-app" hidden>
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-top">
+          <button id="btn-toggle-sidebar" class="icon-btn" type="button" title="Minimize sidebar" aria-label="Minimize sidebar">
+            ‹
+          </button>
+          <div class="sidebar-brand">
+            <span class="brand-dot">QS</span>
+            <strong>QuickShare</strong>
+          </div>
+          <button id="btn-new" class="icon-btn accent" type="button" title="New note" aria-label="New note">+</button>
+        </div>
+
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="Search" aria-label="Search notes" />
+        </div>
+
+        <div class="sidebar-meta">
+          <span>Notes</span>
+          <span id="notes-count">0</span>
+        </div>
+
+        <ul id="notes-list" class="notes-list"></ul>
+
+        <div class="sidebar-bottom">
+          <span class="live-pill">
+            <span id="live-dot" class="live-dot"></span>
+            <span id="live-label">Connecting…</span>
+          </span>
+          <button id="btn-logout" class="text-btn" type="button">Log out</button>
+        </div>
+      </aside>
+
+      <button id="btn-expand-sidebar" class="expand-fab" type="button" title="Show notes" aria-label="Show notes" hidden>
+        ›
+      </button>
+
+      <main class="main">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-card">
+            <div class="empty-icon">✎</div>
+            <h2>No note selected</h2>
+            <p>Choose a note from the left, or create a new one.</p>
+            <button id="btn-new-empty" type="button" class="btn btn-yellow">New Note</button>
+          </div>
+        </div>
+
+        <div id="editor-wrap" class="editor-wrap" hidden>
+          <div class="editor-toolbar-row">
+            <button id="btn-back" type="button" class="text-btn btn-back">‹ Notes</button>
+
+            <div class="toolbar" role="toolbar" aria-label="Formatting">
+              <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+              <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+              <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+              <button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+              <span class="sep"></span>
+              <button type="button" data-cmd="decreaseFontSize" title="Smaller">A−</button>
+              <button type="button" data-cmd="increaseFontSize" title="Larger">A+</button>
+              <span class="sep"></span>
+              <select id="font-family" aria-label="Font">
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Times New Roman', Times, serif">Times</option>
+                <option value="Verdana, sans-serif">Verdana</option>
+                <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+                <option value="'Courier New', Courier, monospace">Courier</option>
+                <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                <option value="Tahoma, sans-serif">Tahoma</option>
+              </select>
+              <select id="font-size" aria-label="Size">
+                <option value="10">XS</option>
+                <option value="12">S</option>
+                <option value="14">S+</option>
+                <option value="16" selected>M</option>
+                <option value="18">L</option>
+                <option value="24">XL</option>
+                <option value="32">2XL</option>
+              </select>
+              <select id="line-gap" aria-label="Line gap" title="Gap between lines">
+                <option value="s">Gap S</option>
+                <option value="m" selected>Gap M</option>
+                <option value="l">Gap L</option>
+                <option value="xl">Gap XL</option>
+                <option value="2xl">Gap 2XL</option>
+              </select>
+              <span class="sep"></span>
+              <button type="button" data-cmd="justifyLeft" title="Align left" class="align-btn" aria-label="Align left">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3V5zm0 6h12v2H3v-2zm0 6h18v2H3v-2z"/></svg>
+              </button>
+              <button type="button" data-cmd="justifyCenter" title="Align center" class="align-btn" aria-label="Align center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3V5zm4 6h10v2H7v-2zm-4 6h18v2H3v-2z"/></svg>
+              </button>
+              <button type="button" data-cmd="justifyRight" title="Align right" class="align-btn" aria-label="Align right">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3V5zm6 6h12v2H9v-2zm-6 6h18v2H3v-2z"/></svg>
+              </button>
+              <button type="button" data-cmd="justifyFull" title="Justify" class="align-btn" aria-label="Justify">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h18v2H3v-2z"/></svg>
+              </button>
+              <span class="sep"></span>
+              <button type="button" data-cmd="insertUnorderedList" title="Bullet list">•</button>
+              <button type="button" data-cmd="insertOrderedList" title="Numbered list">1.</button>
+              <select id="insert-symbol" aria-label="Insert symbol" title="Insert symbol">
+                <option value="" selected disabled>✦</option>
+                <option value="•">• Bullet</option>
+                <option value="◦">◦ Circle</option>
+                <option value="■">■ Square</option>
+                <option value="✓">✓ Check</option>
+                <option value="✗">✗ Cross</option>
+                <option value="★">★ Star</option>
+                <option value="→">→ Arrow</option>
+                <option value="←">← Arrow</option>
+                <option value="—">— Dash</option>
+                <option value="…">… Dots</option>
+                <option value="©">©</option>
+                <option value="®">®</option>
+                <option value="™">™</option>
+                <option value="€">€</option>
+                <option value="£">£</option>
+                <option value="₹">₹</option>
+              </select>
+              <button type="button" data-cmd="removeFormat" title="Clear format">Tx</button>
+              <span class="sep"></span>
+              <button type="button" id="btn-pen" class="pen-toggle" title="Pen draw" aria-pressed="false" aria-label="Pen">
+                <svg class="pen-toggle-ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M4.2 19.4l1.1-3.3 9.9-9.9a1.7 1.7 0 0 1 2.4 2.4l-9.9 9.9-3.5.9z"/>
+                  <path fill="currentColor" opacity=".35" d="M14.8 5.1l2.5 2.5 1.2-1.2a1.7 1.7 0 0 0-2.4-2.4l-1.3 1.1z"/>
+                  <path fill="currentColor" d="M3.6 20.6l1.7-.4-.7-2.1-1 .5z"/>
+                </svg>
+                Pen
+              </button>
+            </div>
+
+            <div class="editor-actions">
+              <span id="save-status" class="save-status">Saved</span>
+              <button id="btn-select-all" type="button" class="action-chip" title="Select all">Select all</button>
+              <button id="btn-copy" type="button" class="action-chip" title="Copy">Copy</button>
+              <button id="btn-delete" type="button" class="action-chip action-chip-danger" title="Delete">Delete</button>
+            </div>
+          </div>
+
+          <div id="pen-bar" class="pen-bar" hidden>
+            <span class="pen-label">Pen</span>
+            <select id="pen-tip" aria-label="Pen type" title="Pen type">
+              <option value="ballpoint" selected>Ballpoint</option>
+              <option value="gel">Gel pen</option>
+              <option value="fine">Fine tip</option>
+              <option value="marker">Marker</option>
+            </select>
+            <div class="pen-colors" role="group" aria-label="Ink color">
+              <button type="button" class="pen-swatch active" data-ink="blue-ball" style="--c:#1a4f9c" title="Blue ballpoint" aria-label="Blue ballpoint"></button>
+              <button type="button" class="pen-swatch" data-ink="blue-gel" style="--c:#0057c2" title="Blue gel" aria-label="Blue gel"></button>
+              <button type="button" class="pen-swatch" data-ink="black-ball" style="--c:#2a2a2a" title="Black ballpoint" aria-label="Black ballpoint"></button>
+              <button type="button" class="pen-swatch" data-ink="black-gel" style="--c:#111111" title="Black gel" aria-label="Black gel"></button>
+              <button type="button" class="pen-swatch" data-ink="red-ball" style="--c:#c0182a" title="Red ballpoint" aria-label="Red ballpoint"></button>
+              <button type="button" class="pen-swatch" data-ink="red-gel" style="--c:#e11d2e" title="Red gel" aria-label="Red gel"></button>
+              <button type="button" class="pen-swatch" data-ink="green-gel" style="--c:#0a7a3e" title="Green gel" aria-label="Green gel"></button>
+            </div>
+            <button type="button" id="btn-eraser" class="pen-tool" title="Eraser" aria-pressed="false">Eraser</button>
+            <button type="button" id="btn-ink-clear" class="pen-tool pen-tool-danger" title="Clear drawing">Clear</button>
+            <button type="button" id="btn-pen-done" class="pen-tool pen-tool-done" title="Done drawing">Done</button>
+          </div>
+
+          <div class="paper" id="paper">
+            <div class="title-row">
+              <input id="note-title" class="note-title" type="text" placeholder="Title" aria-label="Note title" />
+              <button id="btn-pin" type="button" class="title-icon-btn" title="Pin note" aria-label="Pin note" aria-pressed="false">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 17v5"/>
+                  <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4.76z"/>
+                </svg>
+              </button>
+              <button id="btn-download-image" type="button" class="title-icon-btn" title="Download as image" aria-label="Download as image">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v12"/>
+                  <path d="M8 11l4 4 4-4"/>
+                  <path d="M5 19h14"/>
+                </svg>
+              </button>
+            </div>
+            <div class="title-rule" aria-hidden="true"></div>
+            <div class="editor-stack">
+              <div
+                id="editor"
+                class="editor"
+                contenteditable="true"
+                spellcheck="true"
+                data-placeholder="Start writing…"
+              ></div>
+              <canvas id="ink-canvas" class="ink-canvas" aria-label="Drawing layer"></canvas>
+              <div id="pen-cursor" class="pen-cursor" hidden aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="32" height="32">
+                  <!-- Simple ballpoint: tip at (1,31) = exact draw point -->
+                  <g transform="rotate(-40 1 31)">
+                    <rect x="-1.2" y="4" width="4.4" height="20" rx="1.2" fill="#2c2c2e"/>
+                    <rect x="-0.6" y="5.2" width="1.2" height="16" rx="0.5" fill="#fff" opacity=".2"/>
+                    <rect x="-1.2" y="1.6" width="4.4" height="3.2" rx="0.8" fill="#ffcc00"/>
+                    <path d="M-1.2 24h4.4L1.8 30.6c.15.4-.2.7-.55.45L-1.2 24z" fill="#b0b0b5"/>
+                    <circle cx="1" cy="31" r="1.05" fill="#1a1a1a"/>
+                    <circle cx="1" cy="31" r="0.45" fill="#1a4f9c" class="pen-cursor-nib"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <div id="confirm-modal" class="modal" hidden>
+      <div class="modal-backdrop" data-modal-cancel></div>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div class="modal-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </div>
+        <h2 id="confirm-title">Delete note?</h2>
+        <p id="confirm-message">This note will be removed from all PCs.</p>
+        <div class="modal-actions">
+          <button type="button" id="confirm-cancel" class="btn btn-soft" data-modal-cancel>Cancel</button>
+          <button type="button" id="confirm-ok" class="btn btn-delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
